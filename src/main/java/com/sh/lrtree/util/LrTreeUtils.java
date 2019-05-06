@@ -8,7 +8,20 @@ import com.sh.lrtree.struct.LrBuildableTree;
 import com.sh.lrtree.struct.LrTree;
 
 public class LrTreeUtils {
-
+	
+	/**
+	 * 构建树，并且更新填充左右值，一般用于树结构变动时使用
+	 * @param list
+	 * @param parentId
+	 * @return
+	 */
+	public static synchronized <T extends LrBuildableTree<T, PK>, PK> List<T> fullBuild(List<T> list, PK parentId){
+		List<T> result = buildListToSortedTree(list, parentId);
+		recursiveCalcLr(result, 0);
+		recursiveFillLevel(result, 0);
+		return result;
+	}
+	
 	/**
 	 * 将从数据库查询出来的简单列表，内存中构建为树结构.
 	 * @param list
@@ -108,21 +121,25 @@ public class LrTreeUtils {
 	}
 	
 	/**
-	 * 将树结构扁平化为列表
+	 * 将树结构扁平化为列表, 不会修改源树结构，只是添加源数据结构中的每一项到新的列表中
 	 */
-	public static <T extends LrBuildableTree<T, PK>, PK> void flatformTree(List<T> list) {
+	public static <T extends LrTree<PK>, PK> List<T> flatformTree(final List<T> src) {
+		List<T> target = new ArrayList<T>();
 		
+		flatformTreeInternal(src, target);
+		
+		return target;
 	}
 	
-	
-	/**
-	 * 将树结构扁平化为列表
-	 */
-	private static <T extends LrTree<PK>, PK> void flatformTreeInternal(List<T> src, List<T> target) {
+	private static <T extends LrTree<PK>, PK> void flatformTreeInternal(final List<T> src, List<T> target) {
+		
 		for(T t: src) {
-			if(t.getChildren() != null) {
-				//flatformTreeInternal(t.getChildren(), target);
+			List<T> childs = t.getChildren();
+			
+			if(childs != null) {
+				flatformTreeInternal(childs, target);
 			}
+			
 			target.add(t);
 		}
 	}

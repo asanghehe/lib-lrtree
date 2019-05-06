@@ -23,5 +23,5 @@ public interface LrTree<PK> {
 	
 	public boolean isLeaf();
 	
-	public List<? extends LrTree<PK>> getChildren();
+	public <T extends LrTree<PK>> List<T> getChildren();
 }

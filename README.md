@@ -25,4 +25,64 @@ Java 左右值 树构建/平坦化 构建工具 以及数据库示例，利用�
 继承后，从数据库查询出来的对应实体对象列表将可以直接由本库的 LrTreeUtils 构建成树，树可以直接解构成列表
 如果用户的Entity类有自己需要继承的基类，无法继承本库提供的基类，可以实现LrSortedBuildableTree接口，这样提供的LrTreeUtils就可以直接操作实现类，构建树结构以及解构树
 
- 
+
+### 样例代码
+
+Java代码：
+
+```java
+		List<LrNumberIdTreeEntity> list = new ArrayList<LrNumberIdTreeEntity>();
+		//模拟从数据库查询出来的结果
+		for(long i =1; i<10; i++) {
+			LrNumberIdTreeEntity de = new LrNumberIdTreeEntity();
+			de.setId(i);
+			de.setOtherField("继承数字ID树结构"+i);
+			de.setParentId(i-1);
+			list.add(de);
+		}
+		
+		List<LrNumberIdTreeEntity> result = LrTreeUtils.buildListToSortedTree(list, 0L);
+		
+		String r = JSON.toJSONString(result, true);
+		System.out.println(r);
+```
+输出的数据样式：
+
+```json
+[
+	{
+		"children":[
+			{
+				"children":[
+					{
+						"children":[
+							{
+								"id":4,
+								"leaf":false,
+								"otherField":"继承数字ID树结构4",
+								"parentId":3
+							}
+						],
+						"id":3,
+						"leaf":false,
+						"otherField":"继承数字ID树结构3",
+						"parentId":2
+					}
+				],
+				"id":2,
+				"leaf":false,
+				"otherField":"继承数字ID树结构2",
+				"parentId":1
+			}
+		],
+		"id":1,
+		"leaf":false,
+		"otherField":"继承数字ID树结构1",
+		"parentId":0
+	}
+]
+```
+
+### maven 仓库
+
+目前先完善文档，文档完善好后打包放到maven中央仓库

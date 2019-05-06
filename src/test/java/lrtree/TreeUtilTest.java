@@ -68,7 +68,7 @@ public class TreeUtilTest {
 	/**
 	 * 完整的构建树，以及填充左右值，填充元素当前层级 合并方法测试
 	 */
-	@Test
+	//@Test
 	public void fullBuildTest() {
 
 		List<LrNumberIdTreeEntity> list = new ArrayList<LrNumberIdTreeEntity>();
@@ -90,12 +90,12 @@ public class TreeUtilTest {
 	/**
 	 * 基于提供的基类   数字类型的ID 树 测试
 	 */
-	//@Test
+	@Test
 	public void numberIdTest() {
 		
 		List<LrNumberIdTreeEntity> list = new ArrayList<LrNumberIdTreeEntity>();
 		
-		for(long i =1; i<10; i++) {
+		for(long i =1; i<5; i++) {
 			LrNumberIdTreeEntity de = new LrNumberIdTreeEntity();
 			de.setId(i);
 			de.setOtherField("继承数字ID树结构"+i);
@@ -106,7 +106,6 @@ public class TreeUtilTest {
 		List<LrNumberIdTreeEntity> result = LrTreeUtils.buildListToSortedTree(list, 0L);
 		
 		String r = JSON.toJSONString(result, true);
-		
 		System.out.println(r);
 	}
 	

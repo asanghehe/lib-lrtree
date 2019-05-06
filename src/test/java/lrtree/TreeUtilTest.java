@@ -18,7 +18,7 @@ public class TreeUtilTest {
 	/**
 	 * 将树结构扁平化重构成元素列表，方便用于将构建的树信息回填到数据库/文件等
 	 */
-	@Test
+	//@Test
 	public void flatformTest() {
 
 		List<CustLrTreeEntity> list = new ArrayList<CustLrTreeEntity>();
@@ -62,6 +62,28 @@ public class TreeUtilTest {
 		
 		String r = JSON.toJSONString(result, true);
 		
+		System.out.println(r);
+	}
+	
+	/**
+	 * 完整的构建树，以及填充左右值，填充元素当前层级 合并方法测试
+	 */
+	@Test
+	public void fullBuildTest() {
+
+		List<LrNumberIdTreeEntity> list = new ArrayList<LrNumberIdTreeEntity>();
+		
+		for(long i =1; i<10; i++) {
+			LrNumberIdTreeEntity de = new LrNumberIdTreeEntity();
+			de.setId(i);
+			de.setOtherField("继承数字ID树结构"+i);
+			de.setParentId(i-1);
+			list.add(de);
+		}
+		
+		List<LrNumberIdTreeEntity> result = LrTreeUtils.fullBuild(list, 0L);
+		
+		String r = JSON.toJSONString(result, true);
 		System.out.println(r);
 	}
 	

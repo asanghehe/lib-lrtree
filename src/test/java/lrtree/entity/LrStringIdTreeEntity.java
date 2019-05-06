@@ -1,6 +1,8 @@
-package com.sh.lrtree.entity;
+package lrtree.entity;
 
-public class DemoDepartmentEntity extends LrBaseNumberIdEntity<DemoDepartmentEntity>{
+import com.sh.lrtree.entity.LrBaseStringIdEntity;
+
+public class LrStringIdTreeEntity extends LrBaseStringIdEntity<LrStringIdTreeEntity>{
 	
 	private String otherField;
 	

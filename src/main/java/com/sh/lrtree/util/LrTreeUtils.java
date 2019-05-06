@@ -24,12 +24,12 @@ public class LrTreeUtils {
 			T item = list.get(i);
 
 			//数字类型的等于比较
-			if(item instanceof Number) {
+			if(item.getId() instanceof Number) {
 				if(item.getParentId() !=null && item.getParentId().equals(parentId)){
 					root.add(item);
 					list.remove(i);
 				}
-			}else if(item instanceof CharSequence){		//字符串类型的等于 比较
+			}else if(item.getId() instanceof CharSequence){		//字符串类型的等于 比较
 
 				if(item.getParentId() !=null && item.getParentId().toString().equals(parentId.toString())){
 					root.add(item);
@@ -121,7 +121,7 @@ public class LrTreeUtils {
 	private static <T extends LrTree<PK>, PK> void flatformTreeInternal(List<T> src, List<T> target) {
 		for(T t: src) {
 			if(t.getChildren() != null) {
-				flatformTreeInternal(t.getChildren(), target);
+				//flatformTreeInternal(t.getChildren(), target);
 			}
 			target.add(t);
 		}

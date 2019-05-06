@@ -41,6 +41,7 @@ Java代码：
 			list.add(de);
 		}
 		
+		//构建树
 		List<LrNumberIdTreeEntity> result = LrTreeUtils.buildListToSortedTree(list, 0L);
 		
 		String r = JSON.toJSONString(result, true);

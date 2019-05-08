@@ -11,9 +11,9 @@ public class LrTreeUtils {
 	
 	/**
 	 * 构建树，并且更新填充左右值，一般用于树结构变动时使用
-	 * @param list
-	 * @param parentId
-	 * @return
+	 * @param list 源对象列表
+	 * @param parentId 指定的根节点ID
+	 * @return 构建好的树结构
 	 */
 	public static synchronized <T extends LrBuildableTree<T, PK>, PK> List<T> fullBuild(List<T> list, PK parentId){
 		List<T> result = buildListToSortedTree(list, parentId);
@@ -24,11 +24,11 @@ public class LrTreeUtils {
 	
 	/**
 	 * 将从数据库查询出来的简单列表，内存中构建为树结构.
-	 * @param list
-	 * @param int parentId
-	 * @return 树结构
+	 * @param list 源对象列表
+	 * @param int parentId 指定的根节点ID
+	 * @return List<T> 构建好的树结构
 	 */
-	public static synchronized <T extends LrBuildableTree<T, PK>, PK> List<T> buildListToSortedTree(List<T> list, PK parentId){
+	public static synchronized <T extends LrBuildableTree<T, PK>, PK> List<T> buildListToSortedTree(final List<T> list, PK parentId){
 		
 		List<T> root = new ArrayList<T>();
 		
@@ -40,13 +40,13 @@ public class LrTreeUtils {
 			if(item.getId() instanceof Number) {
 				if(item.getParentId() !=null && item.getParentId().equals(parentId)){
 					root.add(item);
-					list.remove(i);
+					//list.remove(i);			//从列表中移除时为了提高效率，经过考虑，不修改源列表了
 				}
 			}else if(item.getId() instanceof CharSequence){		//字符串类型的等于 比较
 
 				if(item.getParentId() !=null && item.getParentId().toString().equals(parentId.toString())){
 					root.add(item);
-					list.remove(i);
+					//list.remove(i);			//从列表中移除时为了提高效率，经过考虑，不修改源列表了
 				}
 			}
 		}
@@ -65,8 +65,8 @@ public class LrTreeUtils {
 	
 	/**
 	 * 预计算并填充左右值
-	 * @param list
-	 * @param parentLeft
+	 * @param list buildListToSortedTree构建的树结构
+	 * @param parentLeft 左值起始值，一般为0或1
 	 * @return int 最终的右值
 	 */
 	public static synchronized <PK> int recursiveCalcLr(List<? extends LrTree<PK>> list, int parentLeft){
@@ -99,9 +99,8 @@ public class LrTreeUtils {
 	
 	/**
 	 * 填充当前节点的Level 信息， 因为速度很快，没有复杂操作，所以没有设计合并到 上面两个方法中
-	 * @param list
-	 * @param parentLeft
-	 * @return int 最终的右值
+	 * @param list buildListToSortedTree构建的树结构
+	 * @param parentLevel 层级起始值
 	 */
 	public static synchronized <PK>  void recursiveFillLevel(List<? extends LrTree<PK>> list, final int parentLevel){
 		if(list == null || list.size() == 0){
@@ -122,6 +121,8 @@ public class LrTreeUtils {
 	
 	/**
 	 * 将树结构扁平化为列表, 不会修改源树结构，只是添加源数据结构中的每一项到新的列表中
+	 * @param src  源树结构
+	 * @return 扁平化简单列表
 	 */
 	public static <T extends LrTree<PK>, PK> List<T> flatformTree(final List<T> src) {
 		List<T> target = new ArrayList<T>();

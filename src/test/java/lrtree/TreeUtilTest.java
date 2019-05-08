@@ -92,7 +92,6 @@ public class TreeUtilTest {
 	 */
 	@Test
 	public void numberIdTest() {
-		
 		List<LrNumberIdTreeEntity> list = new ArrayList<LrNumberIdTreeEntity>();
 		
 		for(long i =1; i<5; i++) {
@@ -102,10 +101,16 @@ public class TreeUtilTest {
 			de.setParentId(i-1);
 			list.add(de);
 		}
+		List<LrNumberIdTreeEntity> result = null;
 		
-		List<LrNumberIdTreeEntity> result = LrTreeUtils.buildListToSortedTree(list, 0L);
-		
+		//单纯的构建树，一般用于读取
+		result = LrTreeUtils.buildListToSortedTree(list, 0L);
 		String r = JSON.toJSONString(result, true);
+		System.out.println(r);
+
+		//构建树，处理填充左右值，当前level, 用于数据库左右值更新的情况
+		result = LrTreeUtils.fullBuild(list, 0L);
+		r = JSON.toJSONString(result, true);
 		System.out.println(r);
 	}
 	

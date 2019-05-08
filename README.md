@@ -43,11 +43,10 @@ Java代码：
 		
 		//构建树
 		List<LrNumberIdTreeEntity> result = LrTreeUtils.buildListToSortedTree(list, 0L);
-		
 		String r = JSON.toJSONString(result, true);
 		System.out.println(r);
 ```
-输出的数据样式：
+第1个输出的数据样式：
 
 ```json
 [
@@ -58,6 +57,7 @@ Java代码：
 					{
 						"children":[
 							{
+								"children":[],
 								"id":4,
 								"leaf":false,
 								"otherField":"继承数字ID树结构4",
@@ -82,6 +82,75 @@ Java代码：
 		"parentId":0
 	}
 ]
+```
+第2个输出的数据样式：
+
+```json
+[
+	{
+		"children":[
+			{
+				"children":[
+					{
+						"children":[
+							{
+								"children":[],
+								"id":4,
+								"leaf":true,
+								"leftValue":4,
+								"level":4,
+								"otherField":"继承数字ID树结构4",
+								"parentId":3,
+								"rightValue":5
+							}
+						],
+						"id":3,
+						"leaf":false,
+						"leftValue":3,
+						"level":3,
+						"otherField":"继承数字ID树结构3",
+						"parentId":2,
+						"rightValue":6
+					}
+				],
+				"id":2,
+				"leaf":false,
+				"leftValue":2,
+				"level":2,
+				"otherField":"继承数字ID树结构2",
+				"parentId":1,
+				"rightValue":7
+			}
+		],
+		"id":1,
+		"leaf":false,
+		"leftValue":1,
+		"level":1,
+		"otherField":"继承数字ID树结构1",
+		"parentId":0,
+		"rightValue":8
+	}
+]
+```
+
+将树结构扁平化
+
+```java
+		//构造测试数据
+		List<CustLrTreeEntity> list = new ArrayList<CustLrTreeEntity>();
+		for(long i =1; i<10; i++) {
+			CustLrTreeEntity de = new CustLrTreeEntity();
+			de.setId(i);
+			de.setOtherField("自定义实体类实现树接口"+i);
+			de.setParentId(i-1);
+			list.add(de);
+		}
+		List<CustLrTreeEntity> result = LrTreeUtils.buildListToSortedTree(list, 0L);
+		String r = JSON.toJSONString(result, true);
+		System.out.println(r);
+		
+		//解构后列表形式的所有元素（元素的children 仍然有对象，涉及到Java的循环引用）
+		result = LrTreeUtils.flatformTree(result);
 ```
 
 ### maven 仓库
